@@ -11,14 +11,18 @@ app.set('views','./views')
 app.use(express.static('public'))
 
 app.get('/',(req,res)=>{
-  res.redirect('/restaurants')
-})
-app.get('/restaurants',(req,res)=>{
+  //res.redirect('/restaurants')
   res.render('index',{restaurants})
 })
 
+app.get('/search',(req,res)=>{
+  const keyword = req.query.keyword || ' '
+  const matchedRT = restaurants.filter((RT) => RT.name.toLowerCase().includes(keyword.toLowerCase()))
+  res.render('index', { restaurants: matchedRT, keyword })
+})
+
 app.get('/restaurant/:id',(req,res)=>{
-  const id = req.params.id 
+  const id = req.params.id
   const restaurant = restaurants.find((restaurant) =>restaurant.id.toString() === id)
   res.render('detail',{restaurant})
 
