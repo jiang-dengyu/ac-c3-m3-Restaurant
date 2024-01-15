@@ -17,7 +17,14 @@ app.get('/',(req,res)=>{
 
 app.get('/search',(req,res)=>{
   const keyword = req.query.keyword || ' '
-  const matchedRT = restaurants.filter((RT) => RT.name.toLowerCase().includes(keyword.toLowerCase()))
+  const matchedRT = keyword ? restaurants.filter((RT) => 
+    Object.values(RT).some((property) => {
+      if (typeof property === 'string') {
+        return property.toLowerCase().includes(keyword.toLowerCase())
+      }
+      return false
+    })  
+  ):restaurants
   res.render('index', { restaurants: matchedRT, keyword })
 })
 
