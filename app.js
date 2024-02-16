@@ -3,7 +3,7 @@ const app = express()
 const port = 3000
 
 const db = require('./models')
-const Stores = db.store
+const Stores = db.Store
 
 const {engine} = require('express-handlebars')
 app.engine('.hbs', engine({extname:'.hbs'}))
@@ -13,7 +13,7 @@ app.set('views','./views')
 /*首頁全部清單*/
 app.get('/',(req,res)=>{
   return Stores.findAll()
-    .then((restaurant)=>res.send('index'))
+    .then((stores)=>res.send({stores}))
     .catch((err) => res.status(422).json(err))
 })
 
