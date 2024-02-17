@@ -89,7 +89,13 @@ app.put('/editStores/:id/edit',(req,res)=>{
     .then(()=> res.redirect('/Stores'))
     .catch((err) => console.log(err))
 })
-
+/*刪除*/
+app.delete('/deleteStore/:id',(req,res)=>{
+  const id = req.params.id;
+  return Stores.destroy({where:{id}})
+    .then(()=>res.redirect('/Stores'))
+    .catch((err) => console.log(err))
+})
 
 
 app.listen(port,()=>{

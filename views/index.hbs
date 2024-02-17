@@ -45,7 +45,9 @@
           <a href="/editStores/{{store.id}}" class="text-secondary">edit</a>
           </div>
           <div>
-            <a href="/storeDetail/{{store.id}}" class="text-secondary">delete</a>
+            <form action="/deleteStore/{{store.id}}?_method=DELETE" method="post">
+              <button type="submit">delete</button>
+            </form>
           </div>
           
         </div>       
