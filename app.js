@@ -36,12 +36,15 @@ app.get('/',(req,res)=>{
 })*/
 
 /*單一detail*/
-/*app.get('/restaurant/:id',(req,res)=>{
+app.get('/restaurant/:id',(req,res)=>{
   const id = req.params.id
-  const restaurant = restaurants.find((restaurant) =>restaurant.id.toString() === id)
-  res.render('detail',{restaurant})
-
-})*/
+  return Stores.findByPk(id,{
+    attributes:['name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description'],
+    raw: true,
+  })
+    .then((Store)=>res.render('detail',{Store:Store}))
+    .catch((err) => res.status(422).json(err))
+})
 
 app.listen(port,()=>{
   console.log(`express server is running on http://localhost:${port}`)
