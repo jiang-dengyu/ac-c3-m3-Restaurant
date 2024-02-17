@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3000
+app.use(express.static('public'))
 
 const db = require('./models')
 const Stores = db.Store
@@ -12,8 +13,11 @@ app.set('views','./views')
 
 /*首頁全部清單*/
 app.get('/',(req,res)=>{
-  return Stores.findAll()
-    .then((stores)=>res.send({stores}))
+  return Stores.findAll({
+    attribute:['id','name','name_em','image'],
+    raw:true,
+  })
+    .then((stores)=>res.render('index',{stores:stores}))
     .catch((err) => res.status(422).json(err))
 })
 
