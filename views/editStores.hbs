@@ -1,0 +1,14 @@
+<form action="/editStores/{{store.id}}/edit?_method=PUT" method="post">
+  <input type="text" placeholder="edit --name-- here" name="name" style="display: block; ">
+  <input type="text" placeholder="edit --name_en-- here" name="name_en" style="display: block;">
+  <input type="text" placeholder="edit --category-- here" name="category" style="display: block;">
+  <input type="text" placeholder="edit --image-- here" name="image" style="display: block;">
+  <input type="text" placeholder="edit --location-- here" name="location" style="display: block;">
+  <input type="text" placeholder="edit --phone-- here" name="phone" style="display: block;">
+  <input type="text" placeholder="edit --google_map-- here" name="google_map" style="display: block;">
+  <input type="text" placeholder="edit --rating-- here" name="rating" style="display: block;">
+  <input type="text" placeholder="edit --description-- here" name="description" style="display: block;">
+  <button type="submit"> Edit </button>
+</form>
+<a href="/storeDetail/{{store.id}}">back to store detail</a> 
+<a href="/">back to home page</a>

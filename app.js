@@ -13,6 +13,8 @@ app.set('views','./views')
 
 app.use(express.urlencoded({ extended: true }))
 
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
 
 /*首頁全部清單*/
 app.get('/',(req,res)=>{
@@ -70,6 +72,24 @@ app.post('/newStores',(req,res)=>{
     .then(()=> res.redirect('/Stores'))
     .catch((err) => console.log(err))
 })
+/*Edit編輯頁面*/
+app.get('/editStores/:id',(req,res)=>{
+  const id = req.params.id
+  return Stores.findByPk(id,{
+    attributes:['id', 'name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description'],
+    raw:true,
+  })
+    .then((store)=> res.render('editStores',{store:store}))
+    .catch((err) => console.log(err))
+})
+app.put('/editStores/:id/edit',(req,res)=>{
+  const body = req.body;
+  const id = req.params.id;
+  return Stores.update({name:body.name, name_en:body.name_en, category:body.category, image:body.image, location:body.location, phone:body.phone, google_map:body.google_map, rating:body.rating, description:body.description},{where:{id}})
+    .then(()=> res.redirect('/Stores'))
+    .catch((err) => console.log(err))
+})
+
 
 
 app.listen(port,()=>{
