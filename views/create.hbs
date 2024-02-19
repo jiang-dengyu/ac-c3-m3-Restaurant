@@ -1,13 +1,13 @@
 <form action="/newStores" method="post">
-    <input type="text" placeholder="add --name-- here" name="name" style="display: block; ">
-    <input type="text" placeholder="add --name_en-- here" name="name_en" style="display: block;">
-    <input type="text" placeholder="add --category-- here" name="category" style="display: block;">
-    <input type="text" placeholder="add --image-- here"name="image" style="display: block;">
-    <input type="text" placeholder="add --location-- here" name="location" style="display: block;">
-    <input type="text" placeholder="add --phone-- here" name="phone" style="display: block;">
-    <input type="text" placeholder="add --google_map-- here" name="google_map" style="display: block;">
-    <input type="text" placeholder="add --rating-- here" name="rating" style="display: block;">
-    <input type="text" placeholder="add --description-- here" name="description" style="display: block;">
+    <input type="text" placeholder="add name-ex:星巴克" name="name" required style="display: block; " maxlength="225" maxlength="225">
+    <input type="text" placeholder="add name_en-ex:starbox" name="name_en" required style="display: block;" maxlength="225" maxlength="225">
+    <input type="text" placeholder="add category-ex:美式" name="category" required style="display: block;" maxlength="225" maxlength="225">
+    <input type="text" placeholder="add image url" name="image" required style="display: block;" maxlength="225" maxlength="225">
+    <input type="text" placeholder="add location-ex:台北" name="location" required style="display: block;" maxlength="225" maxlength="225">
+    <input type="text" placeholder="add phone-ex:0911223344" name="phone" required style="display: block;" maxlength="225">
+    <input type="text" placeholder="add google_map" name="google_map" required style="display: block;" maxlength="225" maxlength="225">
+    <input type="text" placeholder="add rating-ex:4.7" name="rating" required style="display: block;" maxlength="225" maxlength="225">
+    <input type="text" placeholder="add description-ex:星巴克是一間美式餐廳" name="description" required style="display: block;" maxlength="225" maxlength="225">
     <button type="submit"> Create </button>
 </form>
 <a href="/Stores">back to homepage</a>
