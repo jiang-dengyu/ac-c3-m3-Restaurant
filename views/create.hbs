@@ -1,13 +1,46 @@
 <form action="/newStores" method="post">
-    <input type="text" placeholder="add name-ex:星巴克" name="name" required style="display: block; " maxlength="225" maxlength="225">
-    <input type="text" placeholder="add name_en-ex:starbox" name="name_en" required style="display: block;" maxlength="225" maxlength="225">
-    <input type="text" placeholder="add category-ex:美式" name="category" required style="display: block;" maxlength="225" maxlength="225">
-    <input type="text" placeholder="add image url" name="image" required style="display: block;" maxlength="225" maxlength="225">
-    <input type="text" placeholder="add location-ex:台北" name="location" required style="display: block;" maxlength="225" maxlength="225">
-    <input type="text" placeholder="add phone-ex:0911223344" name="phone" required style="display: block;" maxlength="225">
-    <input type="text" placeholder="add google_map" name="google_map" required style="display: block;" maxlength="225" maxlength="225">
-    <input type="text" placeholder="add rating-ex:4.7" name="rating" required style="display: block;" maxlength="225" maxlength="225">
-    <input type="text" placeholder="add description-ex:星巴克是一間美式餐廳" name="description" required style="display: block;" maxlength="225" maxlength="225">
+    <div>
+        <label for="name" style="display: inline;">請新增餐廳名稱</label>
+        <input type="text" placeholder="edit --name-- here" name="name" required style="display: inline; " id="name">
+    </div>
+    <div>
+        <label for="name_en" style="display: inline;">請新增餐廳英文名稱，只能輸入英文</label>
+        <input type="text" placeholder="edit --name_en-- here" name="name_en" required style="display: inline;"
+            id="name_en">
+    </div>
+    <div>
+        <label for="category" style="display: inline;">請新增餐廳分類</label>
+        <input type="text" placeholder="edit --category-- here" name="category" required style="display: inline;"
+            id="category">
+    </div>
+    <div>
+        <label for="image" style="display: inline;">請新增餐廳圖片</label>
+        <input type="text" placeholder="edit --image-- here" name="image" required style="display: inline;" id="image">
+    </div>
+    <div>
+        <label for="location" style="display: inline;">請新增餐廳地址</label>
+        <input type="text" placeholder="edit --location-- here" name="location" required style="display: inline;"
+            id="location">
+    </div>
+    <div>
+        <label for="phone" style="display: inline;">請新增餐廳電話，只能輸入數字</label>
+        <input type="text" placeholder="edit --phone-- here" name="phone" required style="display: inline;" id="phone" pattern="[0-9]*">
+    </div>
+    <div>
+        <label for="google_map" style="display: inline;">請新增餐廳google_map連結</label>
+        <input type="text" placeholder="edit --google_map-- here" name="google_map" required style="display: inline;"
+            id="google_map">
+    </div> 
+    <div>
+        <label for="rating" style="display: inline;">請新增餐廳評分，只能輸入0-5並允許到小數點第一位</label>
+        <input type="text" placeholder="edit --rating-- here" name="rating" required style="display: inline;" id="rating"
+            pattern="[0-5](\.[0-9])?">
+    </div>   
+    <div>
+        <label for="description" style="display: inline;">請新增餐廳簡述</label>
+        <input type="text" placeholder="edit --description-- here" name="description" required style="display: inline;"
+            id="description">
+    </div>
     <button type="submit"> Create </button>
 </form>
 <a href="/Stores">back to homepage</a>
