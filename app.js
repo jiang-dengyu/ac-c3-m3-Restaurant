@@ -4,6 +4,9 @@ const port = 3000;
 const { engine } = require("express-handlebars");
 const methodOverride = require("method-override");
 const routers = require("./routers");
+const flash = require("connect-flash");
+const session = require("express-session");
+
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
@@ -12,7 +15,17 @@ app.set("views", "./views");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(
+  session({
+    secret: "ThisIsStoresList",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(flash());
 app.use(routers);
+
 app.listen(port, () => {
   console.log(`express server is running on http://localhost:${port}`);
 });

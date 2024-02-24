@@ -16,6 +16,19 @@
   </div>
 </div>
 
+<!-- {{#if message}}
+<div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col alert alert-primary  text-center" role="alert">
+      {{message}}
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+{{/if}} -->
+
+
 <!-- restaurant list -->
 <div class="container mt-5">
   <div class="row">
@@ -39,9 +52,9 @@
 
           </div>
           <div>
-            <a href="/storeDetail/{{store.id}}" class="text-secondary"><button>detail</button></a>
-            <a href="/editStores/{{store.id}}" class="text-secondary"><button>edit</button></a>
-            <form action="/deleteStore/{{store.id}}?_method=DELETE" method="post" style="display: inline;">
+            <a href="/Stores/storeDetail/{{store.id}}" class="text-secondary"><button>detail</button></a>
+            <a href="/Stores/editStores/{{store.id}}" class="text-secondary"><button>edit</button></a>
+            <form action="/Stores/deleteStore/{{store.id}}?_method=DELETE" method="post" style="display: inline;">
               <button type="submit">delete</button>
             </form>
           </div>

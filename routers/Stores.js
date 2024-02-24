@@ -9,7 +9,9 @@ router.get("/", (req, res) => {
     attribute: ["id", "name", "name_en", "image"],
     raw: true,
   })
-    .then((stores) => res.render("index", { stores: stores }))
+    .then((stores) =>
+      res.render("index", { stores: stores, message: req.flash("success") })
+    )
     .catch((err) => res.status(422).json(err));
 });
 /*搜尋*/
@@ -73,7 +75,10 @@ router.post("/newStores", (req, res) => {
     rating: rating,
     description: description,
   })
-    .then(() => res.redirect("/Stores"))
+    .then(() => {
+      req.flash("success", "新增成功");
+      res.redirect("/Stores");
+    })
     .catch((err) => console.log(err));
 });
 /*Edit編輯頁面*/
@@ -114,7 +119,10 @@ router.put("/editStores/:id/edit", (req, res) => {
     },
     { where: { id } }
   )
-    .then(() => res.redirect("/Stores"))
+    .then(() => {
+      req.flash("success", "編輯成功");
+      res.redirect("/Stores");
+    })
     .catch((err) => console.log(err));
 });
 /*刪除*/
