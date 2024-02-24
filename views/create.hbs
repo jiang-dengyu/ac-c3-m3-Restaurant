@@ -1,4 +1,15 @@
 <form action="/newStores" method="post">
+    <div class="box">
+        <div class="input__wrapper">
+            <input id="password" type="password" name="password" placeholder="Your Password"
+                title="Minimum 6 characters at least 1 Alphabet and 1 Number"
+                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$" required class="input__field">
+            <label for="password" class="input__label">
+                Password
+            </label>
+            <img alt="Eye Icon" title="Eye Icon" src="assets/eye.svg" class="input__icon">
+        </div>
+    </div>
     <div>
         <label for="name" style="display: inline;">請新增餐廳名稱</label>
         <input type="text" placeholder="edit --name-- here" name="name" required style="display: inline; " id="name">
@@ -31,15 +42,14 @@
         <input type="text" placeholder="edit --google_map-- here" name="google_map" required style="display: inline;"
             id="google_map">
     </div> 
-    <div>
+    <div class="createDiv">
         <label for="rating" style="display: inline;">請新增餐廳評分，只能輸入0-5並允許到小數點第一位</label>
         <input type="text" placeholder="edit --rating-- here" name="rating" required style="display: inline;" id="rating"
             pattern="[0-5](\.[0-9])?">
     </div>   
-    <div>
+    <div class="createDiv">
         <label for="description" style="display: inline;">請新增餐廳簡述</label>
-        <input type="text" placeholder="edit --description-- here" name="description" required style="display: inline;"
-            id="description">
+        <input type="text" placeholder="edit --description-- here" name="description" required style="display: inline;"id="description">
     </div>
     <button type="submit"> Create </button>
 </form>
