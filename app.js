@@ -6,6 +6,8 @@ const methodOverride = require("method-override");
 const router = require("./routes");
 const flash = require("connect-flash");
 const session = require("express-session");
+const messageHandler = require("./middelwares/message-handler");
+const errorHandler = require("./middelwares/error-handler");
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
@@ -21,9 +23,10 @@ app.use(
     saveUninitialized: false,
   })
 );
-
 app.use(flash());
+app.use(messageHandler);
 app.use(router);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`express server is running on http://localhost:${port}`);

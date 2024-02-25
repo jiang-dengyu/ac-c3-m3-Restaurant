@@ -1,0 +1,23 @@
+{{#if success_msg}}
+<div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col alert alert-primary  text-center" role="alert">
+      {{success_msg}}
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+{{/if}}
+
+{{#if error}}
+<div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col alert alert-primary  text-center" role="alert">
+      {{error}}
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+{{/if}}

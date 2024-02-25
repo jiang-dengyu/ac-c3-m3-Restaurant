@@ -10,9 +10,7 @@ router.get("/", (req, res) => {
     attribute: ["id", "name", "name_en", "image"],
     raw: true,
   })
-    .then((stores) =>
-      res.render("index", { stores: stores, message: req.flash("success") })
-    )
+    .then((stores) => res.render("index", { stores: stores }))
     .catch((err) => res.status(422).json(err));
 });
 /*單一detail*/
@@ -37,9 +35,9 @@ router.get("/storeDetail/:id", (req, res) => {
 });
 /*Create新增頁面*/
 router.get("/create", (req, res) => {
-  res.render("create");
+  res.render("create", { error: req.flash("error") });
 });
-router.post("/newStores", (req, res) => {
+router.post("/newStores", (req, res, next) => {
   const {
     name,
     name_en,
@@ -66,7 +64,10 @@ router.post("/newStores", (req, res) => {
       req.flash("success", "新增成功!!!!!!!!!!!!");
       res.redirect("/Stores");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      error.errorMessage = "新增失敗:((((((((((((";
+      next(error);
+    });
 });
 /*Edit編輯頁面*/
 router.get("/editStores/:id", (req, res) => {
@@ -86,7 +87,9 @@ router.get("/editStores/:id", (req, res) => {
     ],
     raw: true,
   })
-    .then((store) => res.render("editStores", { store: store }))
+    .then((store) =>
+      res.render("editStores", { store: store, error: req.flash("error") })
+    )
     .catch((err) => console.log(err));
 });
 router.put("/editStores/:id/edit", (req, res) => {
@@ -110,7 +113,10 @@ router.put("/editStores/:id/edit", (req, res) => {
       req.flash("success", "編輯成功!!!!!!!!!!!!");
       res.redirect("/Stores");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      error.errorMessage = "編輯失敗:(((((((((((((";
+      next(error);
+    });
 });
 /*刪除*/
 router.delete("/deleteStore/:id", (req, res) => {
