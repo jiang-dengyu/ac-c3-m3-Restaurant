@@ -3,10 +3,9 @@ const app = express();
 const port = 3000;
 const { engine } = require("express-handlebars");
 const methodOverride = require("method-override");
-const routers = require("./routers");
+const router = require("./routes");
 const flash = require("connect-flash");
 const session = require("express-session");
-
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
@@ -24,7 +23,7 @@ app.use(
 );
 
 app.use(flash());
-app.use(routers);
+app.use(router);
 
 app.listen(port, () => {
   console.log(`express server is running on http://localhost:${port}`);

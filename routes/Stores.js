@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require("../models");
 const Stores = db.Store;
 
+/*總清單頁面*/
 router.get("/", (req, res) => {
   return Stores.findAll({
     attribute: ["id", "name", "name_en", "image"],
@@ -14,20 +15,6 @@ router.get("/", (req, res) => {
     )
     .catch((err) => res.status(422).json(err));
 });
-/*搜尋*/
-/*router.get('/search',(req,res)=>{
-  const keyword = req.query.keyword || ' '
-  const matchedRT = keyword ? restaurants.filter((RT) => 
-    Object.values(RT).some((property) => {
-      if (typeof property === 'string') {
-        return property.toLowerCase().includes(keyword.toLowerCase())
-      }
-      return false
-    })  
-  ):restaurants
-  res.render('index', { restaurants: matchedRT, keyword })
-})*/
-
 /*單一detail*/
 router.get("/storeDetail/:id", (req, res) => {
   const id = req.params.id;
@@ -76,7 +63,7 @@ router.post("/newStores", (req, res) => {
     description: description,
   })
     .then(() => {
-      req.flash("success", "新增成功");
+      req.flash("success", "新增成功!!!!!!!!!!!!");
       res.redirect("/Stores");
     })
     .catch((err) => console.log(err));
@@ -120,7 +107,7 @@ router.put("/editStores/:id/edit", (req, res) => {
     { where: { id } }
   )
     .then(() => {
-      req.flash("success", "編輯成功");
+      req.flash("success", "編輯成功!!!!!!!!!!!!");
       res.redirect("/Stores");
     })
     .catch((err) => console.log(err));
@@ -129,8 +116,23 @@ router.put("/editStores/:id/edit", (req, res) => {
 router.delete("/deleteStore/:id", (req, res) => {
   const id = req.params.id;
   return Stores.destroy({ where: { id } })
-    .then(() => res.redirect("/Stores"))
+    .then(() => {
+      req.flash("success", "刪除成功!!!!!!!!!!!!");
+      res.redirect("/Stores");
+    })
     .catch((err) => console.log(err));
 });
-
+/*搜尋*/
+/*router.get('/search',(req,res)=>{
+  const keyword = req.query.keyword || ' '
+  const matchedRT = keyword ? restaurants.filter((RT) => 
+    Object.values(RT).some((property) => {
+      if (typeof property === 'string') {
+        return property.toLowerCase().includes(keyword.toLowerCase())
+      }
+      return false
+    })  
+  ):restaurants
+  res.render('index', { restaurants: matchedRT, keyword })
+})*/
 module.exports = router;
