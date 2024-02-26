@@ -1,51 +1,61 @@
 {{>message}}
 
-<form action="/Stores/editStores/{{store.id}}/edit?_method=PUT" method="post">
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+  <form action="/Stores/editStores/{{store.id}}/edit?_method=PUT" method="post">
+    <div style="margin-bottom: 10px;">
+      <label for="name" style="display: inline;">請更改餐廳名稱</label>
+      <input type="text" placeholder="edit --name-- here" name="name" required style="display: inline; " id="name" value="{{store.name}}">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="name_en" style="display: inline;">請更改餐廳英文名稱，只能輸入英文</label>
+      <input type="text" placeholder="edit --name_en-- here" name="name_en" required style="display: inline;" id="name_en" value="{{store.name_en}}" pattern="[A-Za-z]+">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="category" style="display: inline;">請更改餐廳分類</label>
+      <input type="text" placeholder="edit --category-- here" name="category" required style="display: inline;" id="category" value="{{store.category}}">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="image" style="display: inline;">請更改餐廳圖片</label>
+      <input type="text" placeholder="edit --image-- here" name="image" required style="display: block;" id="image" value="{{store.image}}">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="location" style="display: inline;">請更改餐廳地址</label>
+      <input type="text" placeholder="edit --location-- here" name="location" required style="display: block;" id="location" value="{{store.location}}">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="phone" style="display: inline;">請更改餐廳電話，只能輸入數字</label>
+      <input type="text" placeholder="edit --phone-- here" name="phone" required style="display: inline;" id="phone" value="{{store.phone}}" pattern="[0-9]*">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="google_map" style="display: inline;">請更改餐廳google-map連結</label>
+      <input type="text" placeholder="edit --google_map-- here" name="google_map" required style="display: inline;" id="google_map" value="{{store.google_map}}">
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="rating" style="display: inline;">請更改餐廳評分，只能輸入0-5並允許到小數點第一位</label>
+      <input type="text" placeholder="edit --rating-- here" name="rating" required style="display: inline;" id="rating"  value="{{store.rating}}" pattern="[0-5](\.[0-9])?" >
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+      <label for="description" style="display: inline;">請更改餐廳簡述</label>
+      <textarea name="description" id="description" required style="display: block; width: 600px; height: 150px">{{store.description}}</textarea>
+    </div>
+    <button type="submit"> Edit </button>
+  </form>
+</div>
+
+<div style="display: flex; justify-content: center ;margin-bottom:100px">
+  <div style="margin-right: 50px;">
+    <a href="/Stores"
+      style="display: inline; text-align: center; color: rgb(33, 89, 192); background-color: rgb(218, 218, 220); box-shadow: 5px 5px #858585; width: 220px; height: 80px; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+      <i class="fa-solid fa-house" width="30" height="30"></i> back to homepage
+    </a>
   <div>
-    <label for="name" style="display: inline;">請更改餐廳名稱</label>
-    <input type="text" placeholder="edit --name-- here" name="name" required style="display: inline; " id="name" value="{{store.name}}">
-  </div>
-  
-  <div>
-    <label for="name_en" style="display: inline;">請更改餐廳英文名稱，只能輸入英文</label>
-    <input type="text" placeholder="edit --name_en-- here" name="name_en" required style="display: inline;" id="name_en" value="{{store.name_en}}" pattern="[A-Za-z]+">
-  </div>
-  
-  <div>
-    <label for="category" style="display: inline;">請更改餐廳分類</label>
-    <input type="text" placeholder="edit --category-- here" name="category" required style="display: inline;" id="category" value="{{store.category}}">
-  </div>
-  
-  <div>
-    <label for="image" style="display: inline;">請更改餐廳圖片</label>
-    <input type="text" placeholder="edit --image-- here" name="image" required style="display: inline;" id="image" value="{{store.image}}">
-  </div>
-  
-  <div>
-    <label for="location" style="display: inline;">請更改餐廳地址</label>
-    <input type="text" placeholder="edit --location-- here" name="location" required style="display: inline;" id="location" value="{{store.location}}">
-  </div>
-  
-  <div>
-    <label for="phone" style="display: inline;">請更改餐廳電話，只能輸入數字</label>
-    <input type="text" placeholder="edit --phone-- here" name="phone" required style="display: inline;" id="phone" value="{{store.phone}}" pattern="[0-9]*">
-  </div>
-  
-  <div>
-    <label for="google_map" style="display: inline;">請更改餐廳google-map連結</label>
-    <input type="text" placeholder="edit --google_map-- here" name="google_map" required style="display: inline;" id="google_map" value="{{store.google_map}}">
-  </div>
-  
-  <div>
-    <label for="rating" style="display: inline;">請更改餐廳評分，只能輸入0-5並允許到小數點第一位</label>
-    <input type="text" placeholder="edit --rating-- here" name="rating" required style="display: inline;" id="rating"  value="{{store.rating}}" pattern="[0-5](\.[0-9])?" >
-  </div>
-  
-  <div>
-    <label for="description" style="display: inline;">請更改餐廳簡述{{store.description}}</label>
-    <input type="text" placeholder="edit --description-- here" name="description" required style="display: inline;" id="description" value="{{store.description}}">
-  </div>
-  <button type="submit"> Edit </button>
-</form>
-<a href="/storeDetail/{{store.id}}">back to store detail</a> 
-<a href="/">back to home page</a>
+</div>
+

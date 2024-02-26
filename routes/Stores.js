@@ -31,6 +31,7 @@ router.get("/storeDetail/:id", (req, res) => {
   const id = req.params.id;
   return Stores.findByPk(id, {
     attributes: [
+      "id",
       "name",
       "name_en",
       "category",
