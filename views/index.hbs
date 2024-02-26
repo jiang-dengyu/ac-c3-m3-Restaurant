@@ -65,3 +65,27 @@
     </div>
   </div>
 </div>
+
+<!--分頁-->
+<div style="display: flex; justify-content: center;">
+  <div style="display: inline;">
+    <form action="/Stores" method="GET" style="display: inline;">
+      <input type="hidden" name="page" value="{{Previous}}">
+      <button type="submit">Previous</button>
+    </form>
+  </div>
+  <span style="margin: 0 10px;">Page:{{Page}}</span>
+  <div style="display: inline;">
+    <form action="/Stores" method="GET" style="display: inline;">
+      <input type="hidden" name="page" value="{{Next}}">
+      <button type="submit">Next</button>
+    </form>
+  </div>
+  <div style="display: inline;">
+    <form action="/Stores" method="GET">
+      <span style="margin: 0 10px;">Go to Page:
+        <input type="text" name="page" required style="display: inline;margin: 0 3px; width: 50px;" pattern="[0-9]*" value="{{Page}}">
+        <button type="submit">Go</button>
+    </form>
+  </div>
+</div>

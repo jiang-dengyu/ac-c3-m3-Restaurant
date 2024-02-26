@@ -6,11 +6,24 @@ const Stores = db.Store;
 
 /*總清單頁面*/
 router.get("/", (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 6;
+  const offset = (page - 1) * limit;
+
   return Stores.findAll({
     attribute: ["id", "name", "name_en", "image"],
+    offset: offset,
+    limit: limit,
     raw: true,
   })
-    .then((stores) => res.render("index", { stores: stores }))
+    .then((stores) => {
+      res.render("index", {
+        stores: stores,
+        Previous: page > 1 ? page - 1 : page,
+        Next: page + 1,
+        Page: page,
+      });
+    })
     .catch((err) => res.status(422).json(err));
 });
 /*單一detail*/
