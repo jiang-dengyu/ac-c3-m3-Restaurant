@@ -10,10 +10,20 @@ router.get("/", (req, res) => {
   const limit = 6;
   const offset = (page - 1) * limit;
 
+  let order;
+  if (req.query.sortBy) {
+    if (req.query.sortBy === "asc") {
+      order = [["rating", "ASC"]];
+    } else if (req.query.sortBy === "desc") {
+      order = [["rating", "DESC"]];
+    }
+  }
+
   return Stores.findAndCountAll({
     attributes: ["id", "name", "category", "image", "rating"],
     offset: offset,
     limit: limit,
+    order: order,
     raw: true,
   })
 
@@ -26,6 +36,7 @@ router.get("/", (req, res) => {
         Next: page < totalPages ? page + 1 : totalPages,
         Page: page,
         totalPages: totalPages,
+        sortBy: req.query.sortBy || "",
       });
     })
     .catch((err) => res.status(422).json(err));

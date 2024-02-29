@@ -1,8 +1,10 @@
 <!-- search bar --><!-- 新增按鈕 -->
-<div class="container search-bar">
-  <div class="search-bar-outer" style="display: flex;">
-    <h4 class="mb-2">尋找餐廳：</h4>
-    <div class="search-bar-inner" style="display: inline">
+<div class="container search-bar" style="margin-top:10px"> <!-- 上面隔開空間10px -->
+  <div class="row align-items-center"> <!-- 使用網格系統，垂直至中 -->
+    <div class="col-md-3 text-center"> <!-- 往左靠 -->
+      <h4 class="mb-2">尋找餐廳：</h4>
+    </div>
+    <div class="col-md-4"> <!-- 往左靠 -->
       <form action="/Stores/search" method="get">
         <div class="input-group">
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
@@ -13,29 +15,29 @@
         </div>
       </form>
     </div>
-    <div class="search-bar-inner" style="display: inline; margin-left:auto">
-      <button class="btn btn-major">
-        <a class="navbar-brand" href="/Stores/create" style="color:aliceblue">
-          <i class="fa-solid fa-utensils"></i>
-          新增餐廳
-        </a>
-      </button>
+    <div class="col-md-5"> <!--往右靠-->
+      <div class="d-flex justify-content-between"> <!-- 水平同一排-->
+        <button class="btn btn-major">
+          <a class="navbar-brand" href="/Stores/create" style="color:aliceblue">
+            <i class="fa-solid fa-utensils"></i>
+            新增餐廳
+          </a>
+        </button>
+        <div class="dropdown">
+          <button class="btn btn-major dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-sort"></i>  排序sorting
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="/Stores">取消排序</a></li>
+            <li><a class="dropdown-item" href="/Stores?sortBy=desc">依照rating 大-小</a></li>
+            <li><a class="dropdown-item" href="/Stores?sortBy=asc">依照rating 小-大</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
-
-<!--排序按鈕-->
-<!--<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" id="sort-dropdown" data-toggle="dropdown"
-    aria-haspopup="true" aria-expanded="false">
-    Sort
-  </button>
-  <div class="dropdown-menu" aria-labelledby="sort-dropdown">
-    <a class="dropdown-item" href="#">A-Z</a>
-    <a class="dropdown-item" href="#">Z-A</a>
-  </div>
-</div>-->
 
 {{>message}}
 <!-- restaurant list -->
@@ -80,10 +82,12 @@
   <div style="display: inline;">
     <form action="/Stores" method="GET" style="display: inline;">
       <input type="hidden" name="page" value="1">
+      <input type="hidden" name="sortBy" value="{{sortBy}}">
       <button type="submit"><i class="fa-solid fa-backward-step"></i></button>
     </form>
     <form action="/Stores" method="GET" style="display: inline;">
       <input type="hidden" name="page" value="{{Previous}}">
+      <input type="hidden" name="sortBy" value="{{sortBy}}">
       <button type="submit">Previous</button>
     </form>
   </div>
@@ -91,10 +95,12 @@
   <div style="display: inline;">
     <form action="/Stores" method="GET" style="display: inline;">
       <input type="hidden" name="page" value="{{Next}}">
+      <input type="hidden" name="sortBy" value="{{sortBy}}">
       <button type="submit">Next</button>
     </form>
     <form action="/Stores" method="GET" style="display: inline;">
       <input type="hidden" name="page" value="{{totalPages}}">
+      <input type="hidden" name="sortBy" value="{{sortBy}}">
       <button type="submit"><i class="fa-solid fa-forward-step"></i></button>
     </form>
   </div>
