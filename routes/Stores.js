@@ -4,24 +4,28 @@ const router = express.Router();
 const db = require("../models");
 const Stores = db.Store;
 
-/*總清單頁面*/
+/*總清單頁面findAndCountAll()*/
 router.get("/", (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 6;
   const offset = (page - 1) * limit;
 
-  return Stores.findAll({
-    attribute: ["id", "name", "name_en", "image"],
+  return Stores.findAndCountAll({
+    attributes: ["id", "name", "category", "image", "rating"],
     offset: offset,
     limit: limit,
     raw: true,
   })
+
     .then((stores) => {
+      console.log(stores);
+      totalPages = Math.ceil(stores.count / limit);
       res.render("index", {
-        stores: stores,
-        Previous: page > 1 ? page - 1 : page,
-        Next: page + 1,
+        stores: stores.rows,
+        Previous: page > 1 ? page - 1 : 1,
+        Next: page < totalPages ? page + 1 : totalPages,
         Page: page,
+        totalPages: totalPages,
       });
     })
     .catch((err) => res.status(422).json(err));
@@ -142,17 +146,33 @@ router.delete("/deleteStore/:id", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
 /*搜尋*/
-/*router.get('/search',(req,res)=>{
-  const keyword = req.query.keyword || ' '
-  const matchedRT = keyword ? restaurants.filter((RT) => 
-    Object.values(RT).some((property) => {
-      if (typeof property === 'string') {
-        return property.toLowerCase().includes(keyword.toLowerCase())
-      }
-      return false
-    })  
-  ):restaurants
-  res.render('index', { restaurants: matchedRT, keyword })
-})*/
+router.get("/search", (req, res) => {
+  if (!req.query.keyword) {
+    return res.redirect("/");
+  }
+  const keywords = req.query.keyword;
+  const keyword = keywords.trim().toLowerCase();
+  console.log(keywords, keyword); //顯示表單所輸入的關鍵字
+
+  return Stores.findAll({
+    attributes: ["name", "category", "image", "rating"],
+    raw: true,
+  })
+    .then((StoresData) => {
+      console.log(StoresData); //顯示Stores.findAll結果
+      const filterStoresData = StoresData.filter(
+        (data) =>
+          data.name.toLowerCase().includes(keyword) ||
+          data.category.includes(keyword)
+      );
+      console.log(filterStoresData); //顯示StoresData.filter結果
+      res.render("index", {
+        stores: filterStoresData,
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

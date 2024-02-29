@@ -3,7 +3,7 @@
   <div class="search-bar-outer" style="display: flex;">
     <h4 class="mb-2">尋找餐廳：</h4>
     <div class="search-bar-inner" style="display: inline">
-      <form action="/search">
+      <form action="/Stores/search" method="get">
         <div class="input-group">
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
             value="{{keyword}}" aria-describedby="search-button">
@@ -93,12 +93,19 @@
       <input type="hidden" name="page" value="{{Next}}">
       <button type="submit">Next</button>
     </form>
+    <form action="/Stores" method="GET" style="display: inline;">
+      <input type="hidden" name="page" value="{{totalPages}}">
+      <button type="submit"><i class="fa-solid fa-forward-step"></i></button>
+    </form>
   </div>
   <div style="display: inline; margin-left: 100px">
+    
     <form action="/Stores" method="GET">
       <span style="margin: 0 10px;">Go to Page:
-        <input type="text" name="page" required style="display: inline;margin: 0 3px; width: 50px;" pattern="[0-9]*" value="{{Page}}">
+        <input type="number" name="page" required style="display: inline;margin: 0 3px; width: 50px;" pattern="[0-9]*" value="{{Page}}" min="1" max="{{totalPages}}">
+        <span>/  {{totalPages}}</span>
         <button type="submit">Go</button>
     </form>
   </div>
 </div>
+
