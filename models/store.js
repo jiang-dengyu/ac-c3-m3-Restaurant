@@ -15,39 +15,39 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       name_en: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       category: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       image: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       location: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       phone: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       google_map: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       rating: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       description: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       }
     },
     {

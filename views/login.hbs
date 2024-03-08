@@ -1,0 +1,15 @@
+<h1>Login</h1>
+{{> message}}
+
+<div style="display:flex">
+  <form action="/Users/login" method="POST">
+    <label for="email" style="display: block;"><input name="email" placeholder="enter the email" required></label>
+    <label for="password" style="display: block;"><input name="password" placeholder="enter the password"
+        required></label>
+    <button type="submit">login</button>
+  </form>
+</div>
+<span>No account? <a href="/Users/register">Register</a> </span>
+<form action="/login/facebook" method="GET">
+  <button type="submit">Facebook Login</button>
+</form>
