@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const bcrypt = require('bcryptjs')
 
 const db = require('../models')
 const User = db.User
@@ -15,15 +16,17 @@ passport.use(
       raw: true
     })
       .then((user) => {
-        console.log('斷點1')
-        if (!user || user.password !== password) {
+        if (!user) {
           return done(null, false, { message: 'email或密碼錯誤' })
         }
-        console.log('斷點2')
-        return done(null, user)
+        return bcrypt.compare(password, user.password).then((isMatch) => {
+          if (!isMatch) {
+            return done(null, false, { message: 'email或密碼錯誤' })
+          }
+          return done(null, user)
+        })
       })
       .catch((error) => {
-        console.log('斷點3')
         error.message = '登入失敗'
         done(null, error)
       })
@@ -67,24 +70,31 @@ router.post('/register', (req, res, next) => {
     console.log('password與confirmPassword需要一樣')
     return res.redirect('back')
   }
-  return User.findOrCreate({
-    where: { email: email },
-    defaults: {
-      name: name,
-      email: email,
-      password: password
-    },
-    raw: true
-  })
-    .then((user) => {
-      if (!user[1]) {
+  return bcrypt
+    .hash(password, 10)
+    .then((hash) => {
+      console.log(hash, '斷點1')
+      return User.findOrCreate({
+        where: { email: email },
+        defaults: {
+          name: name,
+          email: email,
+          password: hash
+        },
+        raw: true
+      })
+    })
+    .then((Created) => {
+      console.log(Created)
+      if (!Created[1]) {
         req.flash('error', 'email已經存在')
         console.log('email已經存在')
         return res.redirect('/Users/register')
+      } else {
+        req.flash('success', '註冊成功! 請登入!')
+        console.log('註冊成功! 請登入!')
+        return res.redirect('/Users/login')
       }
-      req.flash('success', '註冊成功! 請登入!')
-      console.log('註冊成功! 請登入!')
-      return res.redirect('/Users/login')
     })
     .catch((error) => {
       error.errorMessage = '註冊失敗'
