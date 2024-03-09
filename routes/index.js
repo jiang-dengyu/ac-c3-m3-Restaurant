@@ -10,7 +10,7 @@ router.use('/Users', Users)
 
 /* ********************************************************** */
 router.get('/', (req, res) => {
-  res.redirect('/Stores')
+  res.redirect('/Users/login')
 })
 /* ********************************************************** */
 module.exports = router

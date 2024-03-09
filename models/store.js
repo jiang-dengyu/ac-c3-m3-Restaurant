@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Store.belongsTo(models.User)
     }
   }
   Store.init(
@@ -48,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         allowNull: false,
         type: DataTypes.STRING
+      },
+      userId: {
+        allowNull: false,
+        type: DataTypes.INTEGER
       }
     },
     {
