@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
+const authhandler = require('../middelwares/auth-handler.js')
 /* ********************************************************** */
 const Stores = require('./Stores')
 const Users = require('./Users')
-router.use('/Stores', Stores)
+router.use('/Stores', authhandler, Stores)
 router.use('/Users', Users)
 
 /* ********************************************************** */

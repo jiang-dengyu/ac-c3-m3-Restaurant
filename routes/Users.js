@@ -31,6 +31,9 @@ passport.serializeUser((user, done) => {
   const { id, name, email } = user
   return done(null, { id, name, email })
 })
+passport.deserializeUser((user, done) => {
+  done(null, { id: user.id })
+})
 /* 登入頁面 ****************************************************** */
 router.get('/login', (req, res) => {
   return res.render('login')
@@ -87,7 +90,13 @@ router.post('/register', (req, res, next) => {
 })
 /* 登出 *******************************************************/
 router.post('/logout', (req, res) => {
-  return res.send('logout')
+  req.logout((error) => {
+    if (error) {
+      next(error)
+    }
+
+    return res.redirect('/Users/login')
+  })
 })
 
 module.exports = router
