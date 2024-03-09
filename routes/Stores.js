@@ -5,11 +5,11 @@ const db = require('../models')
 const Stores = db.Store
 
 /*總清單頁面findAndCountAll()*****************************/
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const page = parseInt(req.query.page) || 1
   const limit = 6
   const offset = (page - 1) * limit
-
+  const userId = req.user.id
   let order
   if (req.query.sortBy) {
     if (req.query.sortBy === 'asc') {
@@ -21,12 +21,12 @@ router.get('/', (req, res) => {
 
   return Stores.findAndCountAll({
     attributes: ['id', 'name', 'category', 'image', 'rating'],
+    where: { userId },
     offset: offset,
     limit: limit,
     order: order,
     raw: true
   })
-
     .then((stores) => {
       console.log(stores)
       totalPages = Math.ceil(stores.count / limit)
@@ -39,17 +39,34 @@ router.get('/', (req, res) => {
         sortBy: req.query.sortBy || ''
       })
     })
-    .catch((err) => res.status(422).json(err))
+    .catch((error) => {
+      error.errorMessage = '資料取得失敗'
+      next(error)
+    })
 })
 /*單一detail********************************************************************/
-router.get('/storeDetail/:id', (req, res) => {
+router.get('/storeDetail/:id', (req, res, next) => {
   const id = req.params.id
+  const userId = req.user.id
   return Stores.findByPk(id, {
-    attributes: ['id', 'name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description'],
+    attributes: ['id', 'name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description', 'userId'],
     raw: true
   })
-    .then((Store) => res.render('detail', { Store: Store }))
-    .catch((err) => res.status(422).json(err))
+    .then((Store) => {
+      if (!Store) {
+        req.flash('error', '找不到資料')
+        return res.render('/Stores')
+      }
+      if (Store.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/Stores')
+      }
+      res.render('detail', { Store: Store })
+    })
+    .catch((error) => {
+      error.errorMessage = '資料取得失敗'
+      next(error)
+    })
 })
 /*Create新增頁面********************************************************************/
 router.get('/create', (req, res) => {
@@ -57,6 +74,7 @@ router.get('/create', (req, res) => {
 })
 router.post('/newStores', (req, res, next) => {
   const { name, name_en, category, location, image, phone, google_map, rating, description } = req.body
+  const userId = req.user.id
   return Stores.create({
     name: name,
     name_en: name_en,
@@ -66,49 +84,77 @@ router.post('/newStores', (req, res, next) => {
     phone: phone,
     google_map: google_map,
     rating: rating,
-    description: description
+    description: description,
+    userId: userId
   })
+
     .then(() => {
       req.flash('success', '新增成功!!!!!!!!!!!!')
       res.redirect('/Stores')
     })
-    .catch((err) => {
+    .catch((error) => {
       error.errorMessage = '新增失敗:(((((((((((('
       next(error)
     })
 })
 /*Edit編輯頁面********************************************************************/
-router.get('/editStores/:id', (req, res) => {
+router.get('/editStores/:id', (req, res, next) => {
   const id = req.params.id
+  const userId = req.user.id
   return Stores.findByPk(id, {
-    attributes: ['id', 'name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description'],
+    attributes: ['id', 'name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description', 'userId'],
     raw: true
   })
-    .then((store) => res.render('editStores', { store: store, error: req.flash('error') }))
-    .catch((err) => console.log(err))
+    .then((Store) => {
+      if (!Store) {
+        req.flash('error', '找不到資料')
+        return res.render('/Stores')
+      }
+      if (Store.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/Stores')
+      }
+      res.render('editStores', { Store: Store, error: req.flash('error') })
+    })
+    .catch((error) => {
+      error.errorMessage = '資料取得失敗'
+      next(error)
+    })
 })
 router.put('/editStores/:id/edit', (req, res) => {
   const body = req.body
   const id = req.params.id
-  return Stores.update(
-    {
-      name: body.name,
-      name_en: body.name_en,
-      category: body.category,
-      image: body.image,
-      location: body.location,
-      phone: body.phone,
-      google_map: body.google_map,
-      rating: body.rating,
-      description: body.description
-    },
-    { where: { id } }
-  )
-    .then(() => {
-      req.flash('success', '編輯成功!!!!!!!!!!!!')
-      res.redirect('/Stores')
+  const userId = req.user.id
+
+  return Stores.findByPk(id, {
+    attributes: [id, 'name', 'name_en', 'category', 'image', 'location', 'phone', 'google_map', 'rating', 'description', 'userId'],
+    raw: true
+  })
+    .then((Store) => {
+      if (!Store) {
+        req.flash('error', '找不到資料')
+        return res.render('/Stores')
+      }
+      if (Store.userId !== userId) {
+        req.flash('error', '權限不足')
+        return res.redirect('/Stores')
+      }
+      return Stores.update({
+        name: body.name,
+        name_en: body.name_en,
+        category: body.category,
+        image: body.image,
+        location: body.location,
+        phone: body.phone,
+        google_map: body.google_map,
+        rating: body.rating,
+        description: body.description
+      }).then(() => {
+        req.flash('success', '編輯成功!!!!!!!!!!!!')
+        res.redirect('/Stores')
+      })
     })
-    .catch((err) => {
+    .catch((error) => {
       error.errorMessage = '編輯失敗:((((((((((((('
       next(error)
     })

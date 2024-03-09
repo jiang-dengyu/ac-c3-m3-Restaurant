@@ -8,19 +8,22 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 /* LocalStrategy的策略流程***************************************** */
 passport.use(
-  new LocalStrategy({ usernameField: 'email' }, (username, passowrd, done) => {
+  new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
     return User.findOne({
       attributes: ['id', 'name', 'email', 'password'],
       where: { email: username },
       raw: true
     })
       .then((user) => {
-        if (!user || user.passowrd != password) {
+        console.log('斷點1')
+        if (!user || user.password !== password) {
           return done(null, false, { message: 'email或密碼錯誤' })
         }
+        console.log('斷點2')
         return done(null, user)
       })
       .catch((error) => {
+        console.log('斷點3')
         error.message = '登入失敗'
         done(null, error)
       })
