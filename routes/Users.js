@@ -7,6 +7,7 @@ const User = db.User
 
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const FacebookStrategy = require('passport-facebook')
 /* LocalStrategy的策略流程***************************************** */
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
@@ -32,6 +33,42 @@ passport.use(
       })
   })
 )
+/* FacebookStrategy的策略流程***************************************** */
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env['FACEBOOK_APP_ID'],
+      clientSecret: process.env['FACEBOOK_APP_SECRET'],
+      callbackURL: process.env['FACEBOOK_CALLBACK_URL'],
+      profileFields: ['email', 'displayName']
+    },
+    (accessToken, refreshToken, profile, done) => {
+      console.log(profile)
+      const email = profile.emails[0].value
+      const name = profile.displayName
+
+      return User.findOne({
+        attributes: ['id', 'name', 'email'],
+        where: { email: email },
+        raw: true
+      })
+        .then((user) => {
+          if (user) return done(null, user)
+
+          const randomPwd = Math.random().toString(36).slice(-8)
+
+          return bcrypt
+            .hash(randomPwd, 10)
+            .then((hash) => User.create({ name, email, password: hash }))
+            .then((user) => done(null, { id: user.id, name: user.name, email: user.email }))
+        })
+        .catch((error) => {
+          error.errorMessage = '登入失敗'
+          done(error)
+        })
+    }
+  )
+)
 /* 成功後將登入資訊存入session***************************************** */
 passport.serializeUser((user, done) => {
   const { id, name, email } = user
@@ -44,12 +81,24 @@ passport.deserializeUser((user, done) => {
 router.get('/login', (req, res) => {
   return res.render('login')
 })
-/* 登入後檢驗 ****************************************************** */
+/* 登入後local檢驗 ****************************************************** */
 router.post(
   '/login',
   passport.authenticate('local', {
     successRedirect: '/Stores',
     failureRedirect: '/Users/login',
+    failureFlash: true
+  })
+)
+/* 轉介oauth facebook登入 ****************************************************** */
+router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email'] }))
+
+/* 轉介oauth facebook登入後檢驗 ****************************************************** */
+router.get(
+  '/oauth2/redirect/facebook',
+  passport.authenticate('facebook', {
+    successRedirect: '/Stores',
+    failureRedirect: '/login',
     failureMessage: true
   })
 )
