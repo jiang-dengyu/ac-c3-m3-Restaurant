@@ -20,7 +20,8 @@
 - $set FACEBOOK_APP_SECRET =
 - $set FACEBOOK_CALLBACK_URL = http://localhost:3000/Users/oauth2/redirect/facebook
 - $set NODE_ENV=development
-- $run npm dev
+- $npm run seed
+- $npm run dev
 
 # Environment 開發工具
 
