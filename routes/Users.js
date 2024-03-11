@@ -6,82 +6,12 @@ const db = require('../models')
 const User = db.User
 
 const passport = require('passport')
-const LocalStrategy = require('passport-local')
-const FacebookStrategy = require('passport-facebook')
-/* LocalStrategy的策略流程***************************************** */
-passport.use(
-  new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
-    return User.findOne({
-      attributes: ['id', 'name', 'email', 'password'],
-      where: { email: username },
-      raw: true
-    })
-      .then((user) => {
-        if (!user) {
-          return done(null, false, { message: 'email或密碼錯誤' })
-        }
-        return bcrypt.compare(password, user.password).then((isMatch) => {
-          if (!isMatch) {
-            return done(null, false, { message: 'email或密碼錯誤' })
-          }
-          return done(null, user)
-        })
-      })
-      .catch((error) => {
-        error.message = '登入失敗'
-        done(null, error)
-      })
-  })
-)
-/* FacebookStrategy的策略流程***************************************** */
-passport.use(
-  new FacebookStrategy(
-    {
-      clientID: process.env['FACEBOOK_APP_ID'],
-      clientSecret: process.env['FACEBOOK_APP_SECRET'],
-      callbackURL: process.env['FACEBOOK_CALLBACK_URL'],
-      profileFields: ['email', 'displayName']
-    },
-    (accessToken, refreshToken, profile, done) => {
-      console.log(profile)
-      const email = profile.emails[0].value
-      const name = profile.displayName
 
-      return User.findOne({
-        attributes: ['id', 'name', 'email'],
-        where: { email: email },
-        raw: true
-      })
-        .then((user) => {
-          if (user) return done(null, user)
-
-          const randomPwd = Math.random().toString(36).slice(-8)
-
-          return bcrypt
-            .hash(randomPwd, 10)
-            .then((hash) => User.create({ name, email, password: hash }))
-            .then((user) => done(null, { id: user.id, name: user.name, email: user.email }))
-        })
-        .catch((error) => {
-          error.errorMessage = '登入失敗'
-          done(error)
-        })
-    }
-  )
-)
-/* 成功後將登入資訊存入session***************************************** */
-passport.serializeUser((user, done) => {
-  const { id, name, email } = user
-  return done(null, { id, name, email })
-})
-passport.deserializeUser((user, done) => {
-  done(null, { id: user.id })
-})
 /* 登入頁面 ****************************************************** */
 router.get('/login', (req, res) => {
   return res.render('login')
 })
-/* 登入後local檢驗 ****************************************************** */
+/* 登入後LocalStrategy檢驗 ****************************************************** */
 router.post(
   '/login',
   passport.authenticate('local', {
@@ -90,10 +20,10 @@ router.post(
     failureFlash: true
   })
 )
-/* 轉介oauth facebook登入 ****************************************************** */
+/* oauth 轉介facebook登入 ****************************************************** */
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 
-/* 轉介oauth facebook登入後檢驗 ****************************************************** */
+/* oauth 轉介facebook登入後檢驗 ****************************************************** */
 router.get(
   '/oauth2/redirect/facebook',
   passport.authenticate('facebook', {
@@ -106,7 +36,7 @@ router.get(
 router.get('/register', (req, res) => {
   return res.render('register')
 })
-/* 註冊內容檢驗 *************************************************** */
+/* 註冊內容檢驗  *************************************************** */
 router.post('/register', (req, res, next) => {
   const { email, name, password, confirmPassword } = req.body
 

@@ -12,7 +12,7 @@ const { engine } = require('express-handlebars')
 const methodOverride = require('method-override')
 
 const router = require('./routes')
-const passport = require('passport')
+const passport = require('./config/passport')
 
 const messageHandler = require('./middelwares/message-handler')
 const errorHandler = require('./middelwares/error-handler')
